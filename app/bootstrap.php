@@ -21,13 +21,46 @@ function env_value(string $key, string $fallback = ''): string {
 function db(): PDO {
     static $pdo = null;
     if ($pdo instanceof PDO) return $pdo;
-    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', env_value('DB_HOST', '127.0.0.1'), env_value('DB_PORT', '3306'), env_value('DB_NAME', 'sokofind'));
-    $pdo = new PDO($dsn, env_value('DB_USER', 'root'), env_value('DB_PASS', ''), [
+    $databaseUrl = getenv('DATABASE_URL');
+    if ($databaseUrl !== false && $databaseUrl !== '') {
+        $parts = parse_url($databaseUrl);
+        if (!is_array($parts) || empty($parts['host']) || empty($parts['path'])) {
+            throw new RuntimeException('DATABASE_URL is not a valid PostgreSQL connection URL.');
+        }
+        $database = ltrim($parts['path'], '/');
+        $dsn = sprintf(
+            'pgsql:host=%s;port=%d;dbname=%s;sslmode=require',
+            $parts['host'],
+            $parts['port'] ?? 5432,
+            $database
+        );
+        $username = rawurldecode($parts['user'] ?? '');
+        $password = rawurldecode($parts['pass'] ?? '');
+    } else {
+        $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', env_value('DB_HOST', '127.0.0.1'), env_value('DB_PORT', '3306'), env_value('DB_NAME', 'sokofind'));
+        $username = env_value('DB_USER', 'root');
+        $password = env_value('DB_PASS', '');
+    }
+    $pdo = new PDO($dsn, $username, $password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
+    if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' && getenv('AUTO_MIGRATE') === '1') {
+        $schema = file_get_contents(__DIR__ . '/../sql/schema.postgres.sql');
+        if ($schema === false) throw new RuntimeException('Could not load the PostgreSQL schema.');
+        foreach (array_filter(array_map('trim', explode(';', $schema))) as $statement) {
+            $pdo->exec($statement);
+        }
+    }
     return $pdo;
+}
+
+function new_user_id(PDO $pdo): int {
+    if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql') {
+        return (int)$pdo->query("SELECT currval(pg_get_serial_sequence('users', 'id'))")->fetchColumn();
+    }
+    return (int)$pdo->lastInsertId();
 }
 
 function e(?string $value): string { return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }

@@ -3,7 +3,7 @@ services:
     build: .
     container_name: sokofind-web
     ports:
-      - "127.0.0.1:8080:80"
+      - "127.0.0.1:8080:10000"
     environment:
       DB_HOST: db
       DB_PORT: "3306"

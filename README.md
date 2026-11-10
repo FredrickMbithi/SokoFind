@@ -54,6 +54,10 @@ The public source repository is [FredrickMbithi/SokoFind](https://github.com/Fre
 6. Enable HTTPS in the hosting panel. Open the live site, register a user, publish a test listing, search it, submit a claim from another account, review the claim as the listing owner, and inspect all three reports.
 7. Remove test data before final demonstration if desired. Confirm that `app/config.local.php` is not visible from a browser.
 
+## Render deployment
+
+This repository also includes a Render Blueprint (`render.yaml`) for a PHP Docker web service and PostgreSQL database. Deploy the Blueprint from the public GitHub repository. Render assigns the web service an `onrender.com` address based on the service name. The free web service sleeps after 15 minutes without traffic, and a free Render Postgres database expires after 30 days; use this setup for a project demo rather than long-term production data.
+
 - GitHub repository: https://github.com/FredrickMbithi/SokoFind
 - Live application: **[Add HTTPS URL after hosting]**
 
