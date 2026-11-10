@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    container_name: sokofind-web
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: sokofind
+      DB_USER: sokofind
+      DB_PASS: local-dev-only
+      APP_TIMEZONE: Africa/Nairobi
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    container_name: sokofind-db
+    environment:
+      MYSQL_DATABASE: sokofind
+      MYSQL_USER: sokofind
+      MYSQL_PASSWORD: local-dev-only
+      MYSQL_ROOT_PASSWORD: local-root-dev-only
+      TZ: Africa/Nairobi
+    volumes:
+      - sokofind_mysql:/var/lib/mysql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  sokofind_mysql:
