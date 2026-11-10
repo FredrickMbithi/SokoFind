@@ -44,7 +44,7 @@ The project uses Nairobi time by default. Set `APP_APP_TIMEZONE` in `config.loca
 
 ## Deployment guide (GitHub + free PHP/MySQL hosting)
 
-The live URL and repository URL are intentionally left as fields until the group creates the accounts/repository. Hosting providers change their free plans; select a service that currently offers PHP 8.1+, MySQL/MariaDB, HTTPS, and a persistent database.
+The public source repository is [FredrickMbithi/SokoFind](https://github.com/FredrickMbithi/SokoFind). Add the live HTTPS URL after hosting is configured. Hosting providers change their free plans; select a service that currently offers PHP 8.1+, MySQL/MariaDB, HTTPS, and a persistent database.
 
 1. The project source is in [FredrickMbithi/SokoFind](https://github.com/FredrickMbithi/SokoFind). Keep `app/config.local.php` and all credentials out of Git.
 2. Create a PHP site and MySQL database on the chosen host. Record the provider's database host, database name, database user, and password privately.
