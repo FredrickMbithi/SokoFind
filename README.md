@@ -59,7 +59,7 @@ The public source repository is [FredrickMbithi/SokoFind](https://github.com/Fre
 This repository also includes a Render Blueprint (`render.yaml`) for a PHP Docker web service and PostgreSQL database. Deploy the Blueprint from the public GitHub repository. Render assigns the web service an `onrender.com` address based on the service name. The free web service sleeps after 15 minutes without traffic, and a free Render Postgres database expires after 30 days; use this setup for a project demo rather than long-term production data.
 
 - GitHub repository: https://github.com/FredrickMbithi/SokoFind
-- Live application: **[Add HTTPS URL after hosting]**
+- Live application: **[https://sokofind.onrender.com](https://sokofind.onrender.com)**
 
 ## Suggested submission walkthrough
 
