@@ -46,7 +46,7 @@ The project uses Nairobi time by default. Set `APP_APP_TIMEZONE` in `config.loca
 
 The live URL and repository URL are intentionally left as fields until the group creates the accounts/repository. Hosting providers change their free plans; select a service that currently offers PHP 8.1+, MySQL/MariaDB, HTTPS, and a persistent database.
 
-1. Create a private or public GitHub repository and push this folder. Do not add `app/config.local.php` or any credentials.
+1. The project source is in [FredrickMbithi/SokoFind](https://github.com/FredrickMbithi/SokoFind). Keep `app/config.local.php` and all credentials out of Git.
 2. Create a PHP site and MySQL database on the chosen host. Record the provider's database host, database name, database user, and password privately.
 3. Import `sql/schema.sql` into the hosted database using phpMyAdmin or the provider's database tool.
 4. Deploy the repository files. Set the document root to the `public/` folder. If the host only provides `public_html`, upload the contents of `public/` into `public_html/` and place the `app/` folder beside `public_html/` (one level above the public web root). Never put the database config file under a public directory.
@@ -54,7 +54,7 @@ The live URL and repository URL are intentionally left as fields until the group
 6. Enable HTTPS in the hosting panel. Open the live site, register a user, publish a test listing, search it, submit a claim from another account, review the claim as the listing owner, and inspect all three reports.
 7. Remove test data before final demonstration if desired. Confirm that `app/config.local.php` is not visible from a browser.
 
-- GitHub repository: **[Add repository URL]**
+- GitHub repository: https://github.com/FredrickMbithi/SokoFind
 - Live application: **[Add HTTPS URL after hosting]**
 
 ## Suggested submission walkthrough
